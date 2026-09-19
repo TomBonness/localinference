@@ -1,0 +1,225 @@
+/* Interactive hover tiles: SpecGrid, PillarCards, ResourceTiles */
+
+/* Base tile surface */
+.tile {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+/* Top hairline sweep */
+.tile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.22s ease;
+}
+
+/* Pointer-tracked spotlight (position written by Tiles.tsx) */
+.tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    220px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    rgba(198, 245, 139, 0.08),
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tile:hover,
+.tile:focus-within {
+  border-color: rgba(198, 245, 139, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+}
+
+.tile:hover::before,
+.tile:focus-within::before {
+  transform: scaleX(1);
+}
+
+.tile:hover::after,
+.tile:focus-within::after {
+  opacity: 1;
+}
+
+/* Grid layouts */
+.spec-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.pillar-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.cta-tiles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+@media (min-width: 640px) {
+  .spec-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 720px) {
+  .cta-tiles {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .pillar-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* SpecGrid tile contents */
+.tile-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.tile-value {
+  font-size: 18px;
+  color: var(--text);
+}
+
+.tile-link {
+  color: var(--accent);
+  text-decoration: none;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition:
+    background-size 0.22s ease,
+    color 0.22s ease;
+}
+
+.tile-link:hover,
+.tile-link:focus-visible {
+  background-size: 100% 1px;
+}
+
+.tile-link::after {
+  content: '↗';
+  margin-left: 4px;
+  font-size: 0.7em;
+}
+
+/* PillarCards tile contents */
+.pillar-index {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.pillar-tile h3 {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.pillar-tile p {
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 46ch;
+}
+
+/* ResourceTiles tile contents: the link fills the whole tile */
+.cta-tile {
+  padding: 0;
+}
+
+.cta-tile-link {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  height: 100%;
+  padding: 20px;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--text);
+  text-decoration: none;
+  outline-offset: -2px;
+}
+
+.cta-arrow {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--accent);
+  transition: transform 0.22s ease;
+}
+
+.cta-tile:hover .cta-arrow,
+.cta-tile-link:focus-visible .cta-arrow {
+  transform: translate(3px, -3px);
+}
+
+.cta-note {
+  flex-basis: 100%;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* Reduced motion: pointer-driven spotlight may stay; time-based
+   transforms and sweeps become instant or drop the transform. */
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .tile::before,
+  .tile::after,
+  .tile-link,
+  .cta-arrow {
+    transition: none;
+  }
+
+  .tile:hover,
+  .tile:focus-within {
+    transform: none;
+  }
+
+  .cta-tile:hover .cta-arrow,
+  .cta-tile-link:focus-visible .cta-arrow {
+    transform: none;
+  }
+}

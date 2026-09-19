@@ -1,0 +1,127 @@
+/* Polish pass: hover micro-interactions, ambient depth, and animated
+   gradient text. Consumes the --scroll-progress var set by
+   useScrollProgressVar (Slice A); never sets it itself. */
+
+.magnetic {
+  display: inline-block;
+  position: relative;
+}
+
+.magnetic > span {
+  display: inline-block;
+  will-change: transform;
+}
+
+.gradient-word {
+  background: linear-gradient(92deg, #f3f3e9, var(--accent) 30%, #f3f3e9 55%, var(--accent) 80%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-shift 7s linear infinite;
+}
+
+@keyframes gradient-shift {
+  to {
+    background-position: -220% 0;
+  }
+}
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .gradient-word {
+    color: var(--text);
+    background: none;
+  }
+}
+
+/* Header nav hairline sweep */
+.link-sweep {
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.link-sweep::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.link-sweep:hover::after,
+.link-sweep:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* Filled primary CTA sheen */
+.cta-sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.cta-sheen::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -70%;
+  width: 55%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  transform: skewX(-18deg);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cta-sheen:hover {
+  transform: translateY(-1px);
+}
+
+.cta-sheen:hover::after {
+  transform: translateX(340%) skewX(-18deg);
+}
+
+/* Hero glow, fading and expanding as the page scrolls. */
+.hero-aura {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(640px 460px at 76% 36%, rgba(198, 245, 139, 0.13), transparent 70%);
+  opacity: calc(1 - var(--scroll-progress, 0));
+  transform: scale(calc(1 + var(--scroll-progress, 0) * 0.3));
+}
+
+/* Static page-level ambience: two faint radials, no animation. */
+.site-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(800px 600px at 85% 8%, rgba(198, 245, 139, 0.05), transparent 60%),
+    radial-gradient(1000px 800px at 12% 92%, rgba(26, 42, 32, 0.5), transparent 65%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradient-word {
+    animation: none;
+  }
+
+  .link-sweep::after {
+    transition: none;
+  }
+
+  .cta-sheen::after {
+    transition: none;
+  }
+
+  .cta-sheen:hover {
+    transform: none;
+  }
+}

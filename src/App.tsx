@@ -1,6 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import HeroVisual from './components/HeroVisual'
+import { Reveal, ScrollProgress, useScrollProgressVar } from './components/Reveal'
+import { PillarCards, ResourceTiles, SpecGrid } from './components/Tiles'
+import type { PillarItem, ResourceLink, SpecItem } from './components/Tiles'
+import { GradientWord, Magnetic } from './components/Polish'
 
 type PromptId = 'code' | 'reason' | 'create'
 
@@ -29,6 +33,54 @@ const COMMUNITY_MODEL_URL =
   'https://huggingface.co/huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF'
 const OLLAMA_URL = 'https://ollama.com/huihui_ai/qwen3.8-abliterated'
 
+const SPEC_ITEMS: SpecItem[] = [
+  {
+    label: 'Base',
+    value: 'Qwen3.8-27B',
+    href: BASE_MODEL_URL,
+    external: true,
+  },
+  {
+    label: 'Community build',
+    value: 'huihui-ai',
+    href: COMMUNITY_MODEL_URL,
+    external: true,
+  },
+  { label: 'Distribution', value: 'GGUF' },
+  { label: 'License', value: 'Apache 2.0' },
+]
+
+const PILLARS: PillarItem[] = [
+  {
+    index: '01 /',
+    title: 'Keep it close.',
+    body: 'Your prompts can stay on your hardware when inference runs fully offline.',
+  },
+  {
+    index: '02 /',
+    title: 'Make it yours.',
+    body: 'Choose the weights, runtime, and configuration instead of relying on a hosted endpoint.',
+  },
+  {
+    index: '03 /',
+    title: 'Keep access.',
+    body: 'Once the weights and runtime are installed, compatible setups can work without an internet connection.',
+  },
+]
+
+const RESOURCE_LINKS: ResourceLink[] = [
+  {
+    label: 'Explore the weights',
+    href: COMMUNITY_MODEL_URL,
+    external: true,
+  },
+  {
+    label: 'Run with Ollama',
+    href: OLLAMA_URL,
+    external: true,
+  },
+]
+
 export default function App() {
   const [selected, setSelected] = useState<PromptId>('code')
   const [copyStatus, setCopyStatus] = useState<CopyStatus>('idle')
@@ -40,6 +92,10 @@ export default function App() {
   useEffect(() => {
     currentSelectionRef.current = selected
   }, [selected])
+
+  const heroRef = useRef<HTMLElement>(null)
+
+  useScrollProgressVar(heroRef)
 
   const selectPrompt = (id: PromptId) => {
     setSelected(id)
@@ -75,24 +131,26 @@ export default function App() {
 
   return (
     <>
+      <div className="site-ambient" aria-hidden="true" />
       <a className="skip-link" href="#main">
         Skip to content
       </a>
+      <ScrollProgress />
       <header className="site-header">
         <div className="header-inner">
           <a className="wordmark" href="#main" aria-label="LOCAL — back to top">
             LOCAL
           </a>
           <nav className="header-nav" aria-label="Sections">
-            <a href="#why-local">
+            <a className="link-sweep" href="#why-local">
               <span className="nav-full">Why local</span>
               <span className="nav-short">Why local</span>
             </a>
-            <a href="#model">
+            <a className="link-sweep" href="#model">
               <span className="nav-full">The model</span>
               <span className="nav-short">Model</span>
             </a>
-            <a href="#get-started">
+            <a className="link-sweep" href="#get-started">
               <span className="nav-full">Get started</span>
               <span className="nav-short">Start</span>
             </a>
@@ -101,12 +159,13 @@ export default function App() {
       </header>
 
       <main id="main">
-        <section className="hero" aria-label="Introduction">
+        <section className="hero" ref={heroRef} aria-label="Introduction">
+          <div className="hero-aura" aria-hidden="true" />
           <div className="hero-inner">
-            <div className="hero-text">
+            <Reveal className="hero-text">
               <p className="eyebrow">A case for local AI</p>
               <h1>
-                Intelligence.
+                <GradientWord>Intelligence.</GradientWord>
                 <br />
                 In your hands.
               </h1>
@@ -116,9 +175,11 @@ export default function App() {
                 it.
               </p>
               <div className="hero-links">
-                <a className="btn-primary" href="#model">
-                  Explore the model
-                </a>
+                <Magnetic>
+                  <a className="btn-primary cta-sheen" href="#model">
+                    Explore the model
+                  </a>
+                </Magnetic>
                 <a className="btn-secondary" href="#why-local">
                   Why local matters
                 </a>
@@ -128,43 +189,25 @@ export default function App() {
                 <li>Open weights</li>
                 <li>Local inference</li>
               </ul>
-            </div>
-            <HeroVisual />
+            </Reveal>
+            <Reveal delay={140}>
+              <HeroVisual />
+            </Reveal>
           </div>
         </section>
 
         <section className="content-section" id="why-local">
-          <h2>The power is in who holds it.</h2>
-          <div className="why-columns">
-            <div className="why-item">
-              <span className="why-num">01 /</span>
-              <h3>Keep it close.</h3>
-              <p>
-                Your prompts can stay on your hardware when inference runs
-                fully offline.
-              </p>
-            </div>
-            <div className="why-item">
-              <span className="why-num">02 /</span>
-              <h3>Make it yours.</h3>
-              <p>
-                Choose the weights, runtime, and configuration instead of
-                relying on a hosted endpoint.
-              </p>
-            </div>
-            <div className="why-item">
-              <span className="why-num">03 /</span>
-              <h3>Keep access.</h3>
-              <p>
-                Once the weights and runtime are installed, compatible setups
-                can work without an internet connection.
-              </p>
-            </div>
-          </div>
+          <Reveal>
+            <h2>The power is in who holds it.</h2>
+          </Reveal>
+          <Reveal delay={120}>
+            <PillarCards items={PILLARS} />
+          </Reveal>
         </section>
 
         <section className="content-section" id="model">
-          <div className="model-intro">
+          <Reveal>
+            <div className="model-intro">
             <span className="model-badge">Community-abliterated</span>
             <h2>Meet Qwen 3.8 27B.</h2>
             <p className="section-body">
@@ -172,47 +215,12 @@ export default function App() {
               variant designed to reduce refusals. Explore coding, reasoning,
               and creative tasks in a runtime you control.
             </p>
-            <dl className="spec-list">
-              <div className="spec-row">
-                <dt>Base</dt>
-                <dd>
-                  <a
-                    className="spec-link"
-                    href={BASE_MODEL_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Qwen3.8-27B
-                    <span className="visually-hidden">opens in a new tab</span>
-                  </a>
-                </dd>
-              </div>
-              <div className="spec-row">
-                <dt>Community build</dt>
-                <dd>
-                  <a
-                    className="spec-link"
-                    href={COMMUNITY_MODEL_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    huihui-ai
-                    <span className="visually-hidden">opens in a new tab</span>
-                  </a>
-                </dd>
-              </div>
-              <div className="spec-row">
-                <dt>Distribution</dt>
-                <dd>GGUF</dd>
-              </div>
-              <div className="spec-row">
-                <dt>License</dt>
-                <dd>Apache 2.0</dd>
-              </div>
-            </dl>
+            <SpecGrid items={SPEC_ITEMS} />
           </div>
+          </Reveal>
 
-          <div className="prompt-panel">
+          <Reveal delay={120}>
+            <div className="prompt-panel">
             <fieldset className="prompt-fieldset">
               <legend className="prompt-legend">Choose a prompt to try</legend>
               <div className="prompt-pills">
@@ -280,8 +288,10 @@ export default function App() {
               </div>
             </div>
           </div>
+          </Reveal>
 
-          <div className="refusal-note">
+          <Reveal delay={200}>
+            <div className="refusal-note">
             <h3>Fewer refusals. Not fewer responsibilities.</h3>
             <p>
               Abliteration modifies model weights to reduce refusal behavior.
@@ -300,42 +310,30 @@ export default function App() {
               safeguards for your application.
             </p>
           </div>
-          <p className="hardware-note">
-            Speed, memory use, and output quality depend on your hardware,
-            runtime, context length, and quantization.
-          </p>
+          </Reveal>
+          <Reveal delay={260}>
+            <p className="hardware-note">
+              Speed, memory use, and output quality depend on your hardware,
+              runtime, context length, and quantization.
+            </p>
+          </Reveal>
         </section>
 
         <section className="content-section" id="get-started">
-          <h2>Don't just use AI. Own the setup.</h2>
-          <p className="section-body">
-            Start with the model card. Choose a build that fits your hardware.
-            Then try it in a local runtime.
-          </p>
-          <div className="cta-row">
-            <a
-              className="btn-primary ext-link"
-              href={COMMUNITY_MODEL_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Explore the weights
-              <span className="visually-hidden">opens in a new tab</span>
-            </a>
-            <a
-              className="btn-secondary ext-link"
-              href={OLLAMA_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Run with Ollama
-              <span className="visually-hidden">opens in a new tab</span>
-            </a>
-          </div>
+          <Reveal>
+            <h2>Don't just use AI. Own the setup.</h2>
+            <p className="section-body">
+              Start with the model card. Choose a build that fits your hardware.
+              Then try it in a local runtime.
+            </p>
+          </Reveal>
+          <Reveal delay={120}>
+            <ResourceTiles links={RESOURCE_LINKS} />
+          </Reveal>
         </section>
 
         <footer className="site-footer">
-          <div className="footer-inner">
+          <Reveal className="footer-inner">
             <p className="footer-note">
               Independent showcase. Not affiliated with Qwen.
             </p>
@@ -357,7 +355,7 @@ export default function App() {
                 <span className="visually-hidden">opens in a new tab</span>
               </a>
             </nav>
-          </div>
+          </Reveal>
         </footer>
       </main>
     </>

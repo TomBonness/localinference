@@ -80,6 +80,7 @@
   padding-block: 64px;
   display: flex;
   align-items: center;
+  position: relative;
 }
 .hero-inner {
   width: 100%;
@@ -90,6 +91,8 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 32px;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 .content-section {
   max-width: 1280px;
@@ -270,30 +273,6 @@ h2 {
   margin: 0;
 }
 
-/* Why-local columns */
-.why-columns {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 48px;
-  margin-top: 56px;
-}
-.why-item .why-num {
-  font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
-  font-size: 14px;
-  color: var(--accent);
-}
-.why-item h3 {
-  font-size: 22px;
-  line-height: 1.2;
-  font-weight: 700;
-  margin: 14px 0 10px;
-}
-.why-item p {
-  font-size: 16px;
-  line-height: 1.65;
-  color: var(--text-secondary);
-  margin: 0;
-}
 
 /* Model section */
 .model-badge {
@@ -311,32 +290,19 @@ h2 {
 .model-intro {
   margin-bottom: 64px;
 }
-.spec-list {
+.tile-list {
   margin: 48px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.spec-grid {
   max-width: 640px;
 }
-.spec-row {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 16px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--border);
+.pillar-grid {
+  margin-top: 56px;
 }
-.spec-row:first-child {
-  border-top: 1px solid var(--border);
-}
-.spec-row dt {
-  font-family: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-  padding-top: 2px;
-}
-.spec-row dd {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
+.cta-tiles {
+  margin-top: 36px;
 }
 .spec-link {
   color: var(--accent);
@@ -507,13 +473,6 @@ h2 {
   max-width: 68ch;
 }
 
-/* Get started */
-.cta-row {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-  margin-top: 36px;
-}
 
 /* Footer */
 .site-footer {
@@ -574,9 +533,6 @@ h2 {
   .footer-inner {
     padding-inline: 24px;
   }
-  .why-columns {
-    gap: 32px;
-  }
 }
 
 /* Mobile */
@@ -604,24 +560,12 @@ h2 {
   .content-section {
     padding-block: 72px;
   }
-  .why-columns {
-    grid-template-columns: 1fr;
-    gap: 36px;
-  }
   .model-intro {
     margin-bottom: 48px;
-  }
-  .spec-row {
-    grid-template-columns: 1fr;
-    gap: 4px;
   }
   .refusal-note,
   .hardware-note {
     margin-top: 48px;
-  }
-  .cta-row {
-    flex-direction: column;
-    align-items: flex-start;
   }
 }
 

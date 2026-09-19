@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 500" role="img" aria-label="Abstract illustration of interlocking rings">
+  <defs>
+    <linearGradient id="ringA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a211d"/>
+      <stop offset="55%" stop-color="#3a463f"/>
+      <stop offset="100%" stop-color="#f3f3e9"/>
+    </linearGradient>
+    <linearGradient id="ringB" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1a211d"/>
+      <stop offset="50%" stop-color="#57685c"/>
+      <stop offset="100%" stop-color="#c6f58b"/>
+    </linearGradient>
+    <linearGradient id="ringC" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#101713"/>
+      <stop offset="45%" stop-color="#44524a"/>
+      <stop offset="100%" stop-color="#a4afa7"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="300" cy="250" rx="318" ry="180" fill="none" stroke="#29352e" stroke-width="1" transform="rotate(-18 300 250)"/>
+  <ellipse cx="300" cy="250" rx="155" ry="72" fill="none" stroke="url(#ringA)" stroke-width="28" stroke-linecap="round" transform="rotate(-35 300 250)"/>
+  <ellipse cx="300" cy="250" rx="155" ry="72" fill="none" stroke="url(#ringB)" stroke-width="28" stroke-linecap="round" transform="rotate(25 300 250)"/>
+  <ellipse cx="300" cy="250" rx="155" ry="72" fill="none" stroke="url(#ringC)" stroke-width="28" stroke-linecap="round" transform="rotate(85 300 250)"/>
+  <g fill="#c6f58b">
+    <circle cx="472" cy="118" r="4"/>
+    <circle cx="508" cy="212" r="3"/>
+    <circle cx="496" cy="330" r="5"/>
+    <circle cx="420" cy="404" r="3"/>
+    <circle cx="300" cy="432" r="4"/>
+    <circle cx="180" cy="404" r="3"/>
+    <circle cx="104" cy="330" r="5"/>
+    <circle cx="92" cy="212" r="3"/>
+    <circle cx="128" cy="118" r="4"/>
+    <circle cx="300" cy="76" r="3"/>
+    <circle cx="396" cy="92" r="3"/>
+    <circle cx="204" cy="92" r="4"/>
+  </g>
+</svg>
